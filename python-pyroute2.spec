@@ -15,7 +15,7 @@
 Summary:	Python Netlink library
 Name:		python-%{module}
 Version:	0.5.18
-Release:	1
+Release:	2
 License:	GPLv2+ or Apache v2
 Group:		Libraries/Python
 # if pypi:
@@ -103,6 +103,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %if %{with python3}
+%{__rm} -f $RPM_BUILD_ROOT%{_bindir}/pyroute2-cli
+%{__rm} -f $RPM_BUILD_ROOT%{_bindir}/ss2
 %py3_install
 %endif
 
