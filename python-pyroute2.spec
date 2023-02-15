@@ -1,7 +1,7 @@
 #
 # Conditional build:
-%bcond_without	doc	# Sphinx documentation
-%bcond_without	tests	# unit tests
+%bcond_with	doc	# Sphinx documentation
+%bcond_with	tests	# unit tests
 %bcond_without	python2 # CPython 2.x module
 %bcond_without	python3 # CPython 3.x module
 
@@ -14,14 +14,14 @@
 %define		pypi_name	pyroute2
 Summary:	Python Netlink library
 Name:		python-%{module}
-Version:	0.5.18
-Release:	4
+Version:	0.7.5
+Release:	1
 License:	GPLv2+ or Apache v2
 Group:		Libraries/Python
 # if pypi:
 #Source0Download: https://pypi.org/simple/PYPI_NAME/
 Source0:	https://pypi.debian.net/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-# Source0-md5:	e9cec0003d98e1b0a4d657b87caf52d5
+# Source0-md5:	4f38a5dd4a51acd7e953fb688a1c3525
 URL:		https://pyroute2.org/
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.5
@@ -72,25 +72,22 @@ Dokumentacja API modułu Pythona %{module}.
 %setup -q -n %{pypi_name}-%{version}
 
 %{__sed} -E -i -e '1s,#!\s*/usr/bin/env\s+python3(\s|$),#!%{__python3}\1,' \
-      examples/nftables.py \
-      examples/nl80211_scan_dump.py
+    examples/nftables.py
 
 %build
 %if %{with python2}
 %py_build
-# deprecated target, but sometimes still used: %{?with_tests:test}
 
 %if %{with tests}
-%{__python} -m pytest ...
+nox ...
 %endif
 %endif
 
 %if %{with python3}
 %py3_build
-# deprecated target, but sometimes still used: %{?with_tests:test}
 
 %if %{with tests}
-%{__python3} -m pytest ...
+nox ...
 %endif
 %endif
 
@@ -127,8 +124,9 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc README* CHANGELOG.md
+%doc README* CHANGELOG.rst
 %{py_sitescriptdir}/%{module}
+%{py_sitescriptdir}/pr2modules
 %{py_sitescriptdir}/%{egg_name}-%{version}-py*.egg-info
 %{_examplesdir}/python-%{module}-%{version}
 %endif
@@ -136,10 +134,13 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc README* CHANGELOG.md
+%doc README* CHANGELOG.rst
 %attr(755,root,root) %{_bindir}/pyroute2-cli
+%attr(755,root,root) %{_bindir}/pyroute2-dhcp-client
+%attr(755,root,root) %{_bindir}/pyroute2-test-platform
 %attr(755,root,root) %{_bindir}/ss2
 %{py3_sitescriptdir}/%{module}
+%{py3_sitescriptdir}/pr2modules
 %{py3_sitescriptdir}/%{egg_name}-%{version}-py*.egg-info
 %{_examplesdir}/python3-%{module}-%{version}
 %endif
