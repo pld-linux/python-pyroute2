@@ -15,7 +15,7 @@
 Summary:	Python Netlink library
 Name:		python-%{module}
 Version:	0.7.5
-Release:	2
+Release:	3
 License:	GPLv2+ or Apache v2
 Group:		Libraries/Python
 # if pypi:
