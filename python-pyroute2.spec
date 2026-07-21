@@ -3,7 +3,7 @@
 %bcond_with	doc	# Sphinx documentation
 %bcond_with	tests	# unit tests
 %bcond_without	python2 # CPython 2.x module
-%bcond_without	python3 # CPython 3.x module
+%bcond_with	python3 # CPython 3.x module (built from python3-pyroute2.spec)
 
 # NOTES:
 # - 'module' should match the Python import path (first component?)
@@ -14,8 +14,9 @@
 %define		pypi_name	pyroute2
 Summary:	Python Netlink library
 Name:		python-%{module}
+# keep 0.7.x here for python2 support
 Version:	0.7.5
-Release:	3
+Release:	4
 License:	GPLv2+ or Apache v2
 Group:		Libraries/Python
 # if pypi:
